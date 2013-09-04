@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby -w
+
+$: << 'lib'
+require 'dune'
+
+supervisor = Dune::Server.new
+trap("INT") { supervisor.terminate; exit }
+sleep
