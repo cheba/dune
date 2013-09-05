@@ -3,7 +3,7 @@ require 'nokogiri'
 
 module Dune
   module Stanzas
-    class Bind < Stanza
+    class Bind < IQ
 
       matcher -> n {
         n.name == 'iq' && n['type'] == 'set' && n.xpath('ns:bind', 'ns' => NAMESPACES[:bind]).any?
