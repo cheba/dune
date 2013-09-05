@@ -1,10 +1,8 @@
 module Dune
-  class Stanza
-    def self.inherited(subclass)
-      @subclasses ||= []
-      @subclasses << subclass
-    end
+  module Stanzas
+  end
 
+  class Stanza
     def self.matcher(matcher = nil)
       if matcher
         @matcher = matcher
@@ -14,13 +12,16 @@ module Dune
     end
 
     def self.for(element, stream)
-      @subclasses ||= []
-      stanza_class = @subclasses.detect do |klass|
-        case klass.matcher
-        when String
-          element.xpath(klass.matcher).any?
-        when Proc
-          klass.matcher.call(element)
+      stanza_class = Stanzas.constants.map do |const_name|
+        Stanzas.const_get(const_name)
+      end.detect do |klass|
+        if klass.is_a? Class
+          case klass.matcher
+          when String
+            element.xpath(klass.matcher).any?
+          when Proc
+            klass.matcher.call(element)
+          end
         end
       end
 
