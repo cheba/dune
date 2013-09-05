@@ -4,6 +4,7 @@ module Dune
      client:    'jabber:client',
      server:    'jabber:server',
      component: 'jabber:component:accept',
+     roster:    'jabber:iq:roster',
      sasl:      'urn:ietf:params:xml:ns:xmpp-sasl',
      tls:       'urn:ietf:params:xml:ns:xmpp-tls',
      bind:      'urn:ietf:params:xml:ns:xmpp-bind',
