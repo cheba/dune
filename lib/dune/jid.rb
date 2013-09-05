@@ -61,6 +61,9 @@ module Dune
 
     def parse(jid)
       s, resourcepart = jid.split('/', 2)
+      if resourcepart.nil?
+        resourcepart = ''
+      end
 
       localpart, domainpart = s.split('@', 2)
       if domainpart.nil?
