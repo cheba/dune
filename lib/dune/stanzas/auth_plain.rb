@@ -38,7 +38,7 @@ module Dune
           jid = JID.new(identifier, @stream.domain)
 
           if jid.valid?
-            user = User.authenticate(jid, password)
+            user = User.authenticate(jid, password, @stream.server)
             puts user.inspect
             if user
               # TODO implement authorization
