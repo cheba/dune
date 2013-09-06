@@ -70,13 +70,9 @@ module Dune
     def start_tls
       unless secure?
         ssl_context = OpenSSL::SSL::SSLContext.new.tap do |context|
-          base = File.expand_path('../../../certs', __FILE__)
-          crt = File.join(base, 'lvh.me.crt')
-          key = File.join(base, 'lvh.me.key')
-
-          context.ca_file = File.join(base, 'ca-bundle.crt')
-          context.cert = OpenSSL::X509::Certificate.new(File.read(crt))
-          context.key = OpenSSL::PKey::RSA.new(File.read(key))
+          context.ca_file = server.config.client.ca_file
+          context.cert = OpenSSL::X509::Certificate.new(File.read(server.config.client.cert))
+          context.key = OpenSSL::PKey::RSA.new(File.read(server.config.client.key))
         end
 
         raw_socket = @socket

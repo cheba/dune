@@ -3,16 +3,20 @@ require 'openssl'
 require 'dune/stream'
 require 'dune/router'
 require 'dune/storage'
+require 'dune/configuration'
 
 module Dune
   class Server
     include Celluloid::IO
 
-    attr_reader :router, :storage
+    attr_reader :router, :storage, :config
 
     def initialize
-      host = 'lvh.me'
-      port = 5222
+      @config = Configuration.new
+
+      host = config.client.host
+      port = config.client.port
+
       puts("Accepting client connections on #{host}:#{port}")
 
       @router = Router.new
