@@ -2,7 +2,7 @@ require 'dune/contact'
 
 module Dune
   class Storage
-    def initalize
+    def initialize
     end
 
     def authenticate_user(jid, password)
