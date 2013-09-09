@@ -3,27 +3,34 @@ require 'dune/jid'
 module Dune
   class Contact
 
-    def jid
-      JID.new('cheba@pointlessone.org')
+    def initialize(jid, pending = true, subscription = 'none', name = nil, groups = nil)
+      @jid = JID.new(jid)
+      @pending = pending
+      @subscription = subscription
+      @name = name
+      @groups = groups
     end
+
+    attr_reader :jid, :pending
 
     def name
-      jid.identifier
+      @name || jid.identifier
     end
 
-    def state
-      'both'
+    def subscription
+      @subscription || 'none'
     end
 
     def groups
-      ['devs', 'Ruby']
+      @groups || []
     end
 
     def hash
       [
         jid.bare,
         name,
-        state,
+        pending,
+        subscription,
         groups
       ].hash
     end

@@ -10,7 +10,7 @@ module Dune
     end
 
     def get_roster(jid)
-      [Contact.new]
+      []
     end
   end
 end

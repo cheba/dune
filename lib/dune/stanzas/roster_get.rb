@@ -12,7 +12,10 @@ module Dune
         iq 'result' do |el, doc|
           el << doc.create_element('query', xmlns: NAMESPACES[:roster], ver: contacts.hash) do |query|
             contacts.each do |contact|
-              query << doc.create_element('item', jid: contact.jid.bare, name: contact.name, subscription: contact.state) do |item|
+              query << doc.create_element('item', jid: contact.jid.bare, name: contact.name, subscription: contact.subscription) do |item|
+                if contact.pending
+                  item['ask'] = 'subscribe'
+                end
                 contact.groups.each do |group|
                   item << doc.create_element('group', group)
                 end
