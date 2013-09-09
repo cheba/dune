@@ -17,12 +17,13 @@ module Dune
       host = config.client.host
       port = config.client.port
 
-      puts("Accepting client connections on #{host}:#{port}")
-
       @router = Router.new
       @storage = config.storage.driver.new(config.storage.connection_params)
 
       @server = TCPServer.new(host, port)
+
+      puts("Accepting client connections on #{host}:#{port}")
+
 
       #async.run
       run
