@@ -1,4 +1,5 @@
 require 'dune/parser'
+require 'dune/errors'
 require 'celluloid/io/ssl_socket'
 
 module Dune

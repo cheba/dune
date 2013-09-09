@@ -32,7 +32,7 @@ module Dune
         authzid, identifier, password = decode64(@element.text).split("\x00")
 
         if identifier.nil? || identifier.empty? || password.nil? || password.empty?
-          @stream.auth_fail(SaslErrors::NotAuthorized)
+          @stream.auth_fail(SaslErrors::NotAuthorized.new)
           nil
         else
           jid = JID.new(identifier, @stream.domain)
@@ -48,11 +48,11 @@ module Dune
               @stream.user = user
               %Q{<success xmlns="#{NAMESPACES[:sasl]}"/>}
             else
-              @stream.auth_fail(SaslErrors::NotAuthorized)
+              @stream.auth_fail(SaslErrors::NotAuthorized.new)
               nil
             end
           else
-            @stream.auth_fail(SaslErrors::NotAuthorized)
+            @stream.auth_fail(SaslErrors::NotAuthorized.new)
             nil
           end
         end
