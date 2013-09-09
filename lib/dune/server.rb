@@ -20,7 +20,7 @@ module Dune
       puts("Accepting client connections on #{host}:#{port}")
 
       @router = Router.new
-      @storage = Storage.new
+      @storage = config.storage.driver.new(config.storage.connection_params)
 
       @server = TCPServer.new(host, port)
 

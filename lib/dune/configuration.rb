@@ -11,9 +11,14 @@ module Dune
 
     def reload!
       @client = nil
+      @storage = nil
 
       config_content = File.read(@config_path)
       instance_eval config_content, @config_path
+
+      if @storage.nil?
+        raise "Starge driver is not defined"
+      end
     end
 
 
@@ -27,6 +32,14 @@ module Dune
         @client.instance_exec(&block)
       end
       @client
+    end
+
+    def storage(driver = nil, connection_params = nil)
+      if driver
+        @storage = StorageConfiguration.new(driver, connection_params)
+      else
+        @storage
+      end
     end
   end
 
@@ -88,5 +101,19 @@ module Dune
         @ca_file
       end
     end
+  end
+
+  class StorageConfiguration
+    def initialize(driver, connection_params = nil)
+      driver_class_name = "#{driver.to_s.gsub(/((\A|_)([a-z]))/) {|c|c[-1].upcase }}Storage".to_sym
+      if Dune.constants.include? driver_class_name
+        @driver = Dune.const_get(driver_class_name)
+        @connection_params = connection_params
+      else
+        raise "Driver #{driver} not found"
+      end
+    end
+
+    attr_reader :driver, :connection_params
   end
 end
