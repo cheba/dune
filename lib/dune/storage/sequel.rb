@@ -26,6 +26,22 @@ module Dune
       end
     end
 
+    def subscribe(jid, contact_jid)
+      contact = @db[:contacts].where(jid: jid.bare, contact_jid: contact_jid.bare).first
+      unless contact
+        @db[:contacts].insert(jid: jid.bare, contact_jid: contact_jid.bare)
+        contact = @db[:contacts].where(jid: jid.bare, contact_jid: contact_jid.bare).first
+      end
+
+      Contact.new(
+        contact[:contact_jid],
+        contact[:pending],
+        contact[:subscription],
+        contact[:name],
+        contact[:groups].nil? ? nil : YAML.parse(contact[:groups])
+      )
+    end
+
     private
 
     def setup_schema

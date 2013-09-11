@@ -28,5 +28,9 @@ module Dune
         end
       end
     end
+
+    def route(stanza)
+
+    end
   end
 end

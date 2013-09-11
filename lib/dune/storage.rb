@@ -12,5 +12,10 @@ module Dune
     def get_roster(jid)
       []
     end
+
+
+    # Returns relevant contact
+    def subscribe(jid, contact_jid)
+    end
   end
 end
