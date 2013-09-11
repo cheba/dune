@@ -36,7 +36,7 @@ module Dune
 
       @db.create_table? :contacts do
         String :jid, null: false
-        foreign_key :contact_jid, :users, type: 'varchar(255)'
+        String :contact_jid, null: false
         String :name
         String :groups, text: true
         TrueClass :pending, default: true
