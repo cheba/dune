@@ -14,14 +14,13 @@ module Dune
     end
 
     def get_roster(jid)
-      @db[:contacts].where(jid: jid.bare).map do |c|
-        puts c.inspect
+      @db[:contacts].where(jid: jid.bare).map do |contact|
         Contact.new(
-          c[:contact_jid],
-          c[:pending],
-          c[:subscription],
-          c[:name],
-          c[:groups].nil? ? nil : YAML.parse(c[:groups])
+          contact[:contact_jid],
+          contact[:pending],
+          contact[:subscription],
+          contact[:name],
+          contact[:groups].nil? ? nil : YAML.parse(contact[:groups])
         )
       end
     end
