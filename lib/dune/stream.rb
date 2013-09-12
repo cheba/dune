@@ -28,7 +28,7 @@ module Dune
         return if @closed
 
         data = @socket.readpartial(4096)
-        puts "\e[33m#{data.strip.empty? ? '∅' : data}\e[0m"
+        puts "\e[34m#{data.strip.empty? ? '∅' : data}\e[0m"
         @parser << data
       end
     rescue EOFError => e
@@ -43,7 +43,7 @@ module Dune
       if str
         str = str.to_xml if str.respond_to?(:to_xml)
 
-        puts "\e[36m#{str.strip.empty? ? '∅' : str}\e[0m"
+        puts "\e[32m#{str.strip.empty? ? '∅' : str}\e[0m"
         @socket.write(str).tap do |n|
           puts "<-   #{n}"
         end
