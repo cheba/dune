@@ -20,7 +20,7 @@ module Dune
         doc = Nokogiri::XML::Document.new
         doc.create_element('iq') do |el|
           el['type'] = 'set'
-          el['to'] = @stream.user
+          el['to'] = @stream.user.jid.bare
 
           el << doc.create_element('query', xmlns: NAMESPACES[:roster]) do |query|
               query << doc.create_element('item', jid: contact.jid.bare, name: contact.name, subscription: contact.subscription) do |item|
