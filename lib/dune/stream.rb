@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'dune/parser'
 require 'dune/errors'
 require 'celluloid/io/ssl_socket'
