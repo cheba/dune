@@ -41,6 +41,7 @@ module Dune
     end
 
     def response
+      puts "\e[33;1m" + "Unhandled stanza" + "\e[0m"
       ''
     end
   end
