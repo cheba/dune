@@ -54,6 +54,7 @@ require 'dune/stanzas/iq'
 require 'dune/stanzas/starttls'
 require 'dune/stanzas/auth_plain'
 require 'dune/stanzas/bind'
-require 'dune/stanzas/roster_get'
 
+require 'dune/stanzas/roster_get'
+require 'dune/stanzas/roster_set'
 require 'dune/stanzas/subscribe'

@@ -25,6 +25,17 @@ module Dune
       end
     end
 
+    def set_roster(jid, contacts)
+      contacts.each do |contact|
+        dset = @db[:contacts].where(jid: jid.bare, contact_jid: contact.jid.bare)
+        if dset.first
+          dset.update(contact.attributes.select {|k, v| [:name, :pending, :subscription, :gruops].include? k })
+        else
+          dset.insert(contact.attributes)
+        end
+      end
+    end
+
     def subscribe(jid, contact_jid)
       contact = @db[:contacts].where(jid: jid.bare, contact_jid: contact_jid.bare).first
       unless contact

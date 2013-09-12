@@ -13,6 +13,9 @@ module Dune
       []
     end
 
+    def set_roster(jid, contacts)
+    end
+
 
     # Returns relevant contact
     def subscribe(jid, contact_jid)
