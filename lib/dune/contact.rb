@@ -16,6 +16,7 @@ module Dune
     def name
       @name || jid.identifier
     end
+    attr_writer :name
 
     def subscription
       @subscription || 'none'
@@ -23,6 +24,20 @@ module Dune
 
     def groups
       @groups || []
+    end
+
+    def groups=(*params)
+      @groups = params.flatten
+    end
+
+    def attributes
+      {
+        jid: jid.bare,
+        name: name,
+        pending: pending,
+        subscription: subscription,
+        groups: YAML.dump(groups)
+      }
     end
 
     def hash
