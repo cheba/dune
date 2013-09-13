@@ -12,7 +12,7 @@ module Dune
         item_el = @element.xpath('.//ns:item', ns: NAMESPACES[:roster])[0]
         destination = JID.new(item_el['jid'])
 
-        contact = @stream.server.storage.subscribe(@stream.user.jid, destination)
+        contact = @stream.user.roster[destination] || Contact.new(destination)
 
         groups = @element.xpath('.//ns:item/ns:group', ns: NAMESPACES[:roster]).map { |el| el.text }
 
@@ -25,8 +25,7 @@ module Dune
           contact.name = name
         end
 
-
-        @stream.server.storage.set_roster(@stream.user.jid, [contact])
+        contact = @stream.user.roster << contact
 
         doc = Nokogiri::XML::Document.new
         doc.create_element('iq') do |el|
@@ -34,14 +33,14 @@ module Dune
           el['to'] = @stream.user.jid.bare
 
           el << doc.create_element('query', xmlns: NAMESPACES[:roster]) do |query|
-              query << doc.create_element('item', jid: contact.jid.bare, name: contact.name, subscription: contact.subscription) do |item|
-                if contact.pending
-                  item['ask'] = 'subscribe'
-                end
-                contact.groups.each do |group|
-                  item << doc.create_element('group', group)
-                end
+            query << doc.create_element('item', jid: contact.jid.bare, name: contact.name, subscription: contact.subscription) do |item|
+              if contact.pending
+                item['ask'] = 'subscribe'
               end
+              contact.groups.each do |group|
+                item << doc.create_element('group', group)
+              end
+            end
           end
         end
       end

@@ -1,5 +1,4 @@
 require 'sequel'
-require 'yaml'
 
 module Dune
   class SequelStorage < Storage
@@ -20,35 +19,31 @@ module Dune
           contact[:pending],
           contact[:subscription],
           contact[:name],
-          contact[:groups].nil? ? nil : YAML.parse(contact[:groups])
+          contact[:groups] || []
         )
       end
     end
 
-    def set_roster(jid, contacts)
-      contacts.each do |contact|
-        dset = @db[:contacts].where(jid: jid.bare, contact_jid: contact.jid.bare)
-        if dset.first
-          dset.update(contact.attributes.select {|k, v| [:name, :pending, :subscription, :gruops].include? k })
-        else
-          dset.insert(contact.attributes)
-        end
-      end
-    end
+    def set_roster(jid, contact)
+      puts "Setting contact: #{contact}"
+      dset = @db[:contacts].where(jid: jid.bare, contact_jid: contact.jid.bare)
+      if dset.first
+        dset.update(contact.attributes.select {|k, v| [:name, :pending, :subscription, :gruops].include? k })
+      else
+        a = contact.attributes
+        a[:contact_jid] = a[:jid]
+        a[:jid] = jid.bare
 
-    def subscribe(jid, contact_jid)
-      contact = @db[:contacts].where(jid: jid.bare, contact_jid: contact_jid.bare).first
-      unless contact
-        @db[:contacts].insert(jid: jid.bare, contact_jid: contact_jid.bare)
-        contact = @db[:contacts].where(jid: jid.bare, contact_jid: contact_jid.bare).first
+        dset.insert(a)
       end
 
+      data = dset.first
       Contact.new(
-        contact[:contact_jid],
-        contact[:pending],
-        contact[:subscription],
-        contact[:name],
-        contact[:groups].nil? ? nil : YAML.parse(contact[:groups])
+        data[:contact_jid],
+        data[:pending],
+        data[:subscription],
+        data[:name],
+        data[:groups] || []
       )
     end
 

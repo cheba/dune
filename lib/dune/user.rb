@@ -1,3 +1,5 @@
+require 'dune/roster'
+
 module Dune
   class User
     def self.authenticate(jid, password, server)
@@ -10,11 +12,12 @@ module Dune
       end
     end
 
-    attr_reader :jid
+    attr_reader :jid, :server, :roster
 
     def initialize(jid, server)
       @jid = jid
       @server = server
+      @roster = Roster.new(self)
     end
   end
 end

@@ -7,7 +7,7 @@ module Dune
       }
 
       def response
-        contacts = @stream.server.storage.get_roster(@stream.user.jid)
+        contacts = @stream.user.roster.all
 
         iq 'result' do |el, doc|
           el << doc.create_element('query', xmlns: NAMESPACES[:roster], ver: contacts.hash) do |query|

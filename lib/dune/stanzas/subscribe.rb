@@ -9,10 +9,10 @@ module Dune
       }
 
       def response
-        destination = JID.new(@element['to'])
-        @element['to'] = destination.bare
+        destination = JID.new(JID.new(@element['to']).bare)
+        @element['to'] = destination
 
-        contact = @stream.server.storage.subscribe(@stream.user.jid, destination)
+        contact = @stream.user.roster.subscribe(destination)
 
         @stream.server.router.route(@element)
 

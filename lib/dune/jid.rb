@@ -14,7 +14,7 @@ module Dune
     def initialize(identifier, domain = nil, resource = nil)
 
       if domain.nil? && resource.nil?
-        parse(identifier)
+        parse(identifier.to_s)
       else
         @identifier = (identifier || '')
         @domain = (domain || '')

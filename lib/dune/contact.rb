@@ -62,5 +62,19 @@ module Dune
         groups
       ].hash
     end
+
+    def ==(other)
+      attributes == other.attributes
+    end
+
+    def dup
+      self.class.new(
+        jid.full,
+        pending,
+        subscription,
+        name,
+        groups.dup
+      )
+    end
   end
 end
