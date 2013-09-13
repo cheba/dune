@@ -11,7 +11,7 @@ module Dune
       @groups = groups
     end
 
-    attr_reader :jid, :pending
+    attr_accessor :jid, :pending
 
     def name
       @name || jid.identifier
@@ -20,6 +20,14 @@ module Dune
 
     def subscription
       @subscription || 'none'
+    end
+
+    def subscription=(sub)
+      if %w[none to from both].include? sub.to_s
+        @subscription = sub
+      else
+        raise ArgumentError
+      end
     end
 
     def groups
