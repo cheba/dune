@@ -1,4 +1,5 @@
 require 'dune/jid'
+require 'yaml'
 
 module Dune
   class Contact
