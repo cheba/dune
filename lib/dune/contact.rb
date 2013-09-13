@@ -4,7 +4,7 @@ require 'yaml'
 module Dune
   class Contact
 
-    def initialize(jid, pending = true, subscription = 'none', name = nil, groups = nil)
+    def initialize(jid, pending = true, subscription = 'none', name = nil, groups = [])
       @jid = JID.new(jid)
       @pending = pending
       @subscription = subscription
