@@ -1,5 +1,5 @@
 require 'dune/jid'
-require 'yaml'
+require 'json'
 
 module Dune
   class Contact
@@ -9,7 +9,7 @@ module Dune
       @pending = pending
       @subscription = subscription
       @name = name
-      @groups = groups
+      self.groups = groups
     end
 
     attr_accessor :jid, :pending
@@ -35,8 +35,12 @@ module Dune
       @groups
     end
 
-    def groups=(*params)
-      @groups = params.flatten
+    def groups=(grps)
+      if grps.is_a? String
+        @groups = [JSON.parse(grps)].flatten
+      else
+        @groups = grps
+      end
     end
 
     def attributes
@@ -45,7 +49,7 @@ module Dune
         name: name,
         pending: pending,
         subscription: subscription,
-        groups: YAML.dump(groups)
+        groups: JSON.dump(groups)
       }
     end
 
