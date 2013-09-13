@@ -48,7 +48,7 @@ module Dune
     alias_method :to_s, :full
 
     def bare
-      s = @domain
+      s = @domain.dup
 
       unless @identifier.empty?
         s = "#{@identifier}@#{s}"
