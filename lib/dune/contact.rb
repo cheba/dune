@@ -32,7 +32,7 @@ module Dune
     end
 
     def groups
-      @groups || []
+      @groups
     end
 
     def groups=(*params)
