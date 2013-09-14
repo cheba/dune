@@ -8,6 +8,10 @@ module Dune
         if @element.name != 'iq'
           raise "This is not an IQ stanza"
         end
+
+        if @elements['id'].nil?
+          raise "ID attribute is missing"
+        end
       end
 
       private
