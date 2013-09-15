@@ -16,12 +16,7 @@ module Dune
         Stanzas.const_get(const_name)
       end.detect do |klass|
         if klass.is_a? Class
-          case klass.matcher
-          when String
-            element.xpath(klass.matcher).any?
-          when Proc
-            klass.matcher.call(element)
-          end
+          klass.matcher.first.call(element)
         end
       end
 
