@@ -9,7 +9,7 @@ module Dune
           raise "This is not an IQ stanza"
         end
 
-        if @elements['id'].nil?
+        if @element['id'].nil?
           raise "ID attribute is missing"
         end
       end
