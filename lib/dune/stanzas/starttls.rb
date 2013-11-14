@@ -13,6 +13,14 @@ module Dune
           nil
         end
       end
+
+      def new_context(context)
+        if context == :unauthorized_client
+          :authorization
+        else
+          :client
+        end
+      end
     end
   end
 end

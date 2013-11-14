@@ -1,3 +1,4 @@
+require 'dune/stanzas/iq'
 require 'dune/jid'
 
 module Dune

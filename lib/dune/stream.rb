@@ -7,7 +7,7 @@ module Dune
   class Stream
     MAX_AUTH_FAILS = 3
 
-    attr_accessor :id, :domain, :server, :user
+    attr_accessor :id, :domain, :server, :user, :context
 
     def initialize(socket, server)
       @socket = socket
@@ -20,6 +20,7 @@ module Dune
       @user = nil
 
       @parser = Parser.new(self)
+      @context = :unauthorized_client
 
       @stanza_size = 0
     end

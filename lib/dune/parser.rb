@@ -2,11 +2,37 @@ require 'nokogiri'
 require 'securerandom'
 require 'dune/stanza'
 
+# Specific stanzas
+require 'dune/stanzas/starttls'
+require 'dune/stanzas/auth_plain'
+require 'dune/stanzas/bind'
+
+require 'dune/stanzas/roster_get'
+require 'dune/stanzas/roster_set'
+require 'dune/stanzas/subscribe'
+
 module Dune
   class Parser < Nokogiri::XML::SAX::Document
     include Nokogiri::XML
     STREAM_NAME = 'stream'
     IGNORE = NAMESPACES.values_at(:client, :component, :server)
+
+    CONTEXTS = {
+      unauthorized_client: [
+        Stanzas::StartTLS
+      ],
+      authorization: [
+        Stanzas::AuthPlain
+      ],
+      binding: [
+        Stanzas::Bind
+      ],
+      client: [
+        Stanzas::RosterGet,
+        Stanzas::RosterSet,
+        Stanzas::Subscribe
+      ]
+    }
 
 
     def initialize(stream)
@@ -88,7 +114,9 @@ module Dune
         puts "ERROR"
         close_stream
       else
-        stream.write Stanza.for(element, stream).response
+        stanza = stanza_for(element)
+        stream.context = stanza.new_context(stream.context)
+        stream.write stanza.response
       end
     end
 
@@ -141,6 +169,17 @@ module Dune
           end
         end
       end
+    end
+
+    def stanza_for(element)
+      stanza_class = CONTEXTS[stream.context].find(-> { Stanza }) do |klass|
+        klass.matcher.call(element)
+      end
+
+      stanza_class.new(element, stream)
+    rescue
+      require 'rubinius/debugger'
+      Rubinius::Debugger.start
     end
   end
 end

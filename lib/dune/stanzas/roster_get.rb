@@ -1,3 +1,5 @@
+require 'dune/stanzas/iq'
+
 module Dune
   module Stanzas
     class RosterGet < IQ

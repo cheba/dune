@@ -1,5 +1,6 @@
 require 'securerandom'
 require 'nokogiri'
+require 'dune/stanzas/iq'
 
 module Dune
   module Stanzas
@@ -20,6 +21,10 @@ module Dune
             bind << doc.create_element('jid', @stream.user.jid.full)
           end
         end
+      end
+
+      def new_context(context)
+        :client
       end
     end
   end

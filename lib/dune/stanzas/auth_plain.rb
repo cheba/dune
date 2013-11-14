@@ -24,6 +24,14 @@ module Dune
         end
       end
 
+      def new_conext(context)
+        if @stream.authenticated?
+          context
+        else
+          :binding
+        end
+      end
+
       private
 
       def auth
