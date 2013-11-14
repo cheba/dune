@@ -22,7 +22,7 @@ module Dune
     end
 
     def close_stream
-      @stream.close
+      stream.close
     end
 
 
@@ -59,6 +59,8 @@ module Dune
 
     private
 
+    attr_reader :stream
+
     def stream?(name, uri)
       name == 'stream' && uri == NAMESPACES[:stream]
     end
@@ -86,22 +88,22 @@ module Dune
         puts "ERROR"
         close_stream
       else
-        @stream.write Stanza.for(element, @stream).response
+        stream.write Stanza.for(element, stream).response
       end
     end
 
     def write_stream_header(attrs)
       if domain_attr = attrs.find{|attr| attr.localname == 'to'}
-        @stream.domain = domain_attr.value
+        stream.domain = domain_attr.value
       end
-      @stream.id = SecureRandom.uuid
+      stream.id = SecureRandom.uuid
 
       attributes = {
         'xmlns' => NAMESPACES[:client],
         'xmlns:stream' => NAMESPACES[:stream],
         'xml:lang' => 'en',
-        'id' => @stream.id,
-        'from' => @stream.domain,
+        'id' => stream.id,
+        'from' => stream.domain,
         'version' => '1.0'
       }
 
@@ -109,21 +111,21 @@ module Dune
         attributes['to'] = from_attr.value
       end
 
-      @stream.write %Q(<?xml version="1.0" encoding="UTF-8" ?>\n<stream:stream %s>) % attributes.map { |k, v| %(#{k}="#{v}") }.join(' ')
+      stream.write %Q(<?xml version="1.0" encoding="UTF-8" ?>\n<stream:stream %s>) % attributes.map { |k, v| %(#{k}="#{v}") }.join(' ')
 
-      @stream.write(features)
+      stream.write(features)
     end
 
     def features
       doc = Document.new
       doc.create_element('stream:features') do |el|
-        unless @stream.secure?
+        unless stream.secure?
           el << doc.create_element('starttls') do |tls|
             tls.default_namespace = NAMESPACES[:tls]
             tls << doc.create_element('required')
           end
         else
-          unless @stream.authenticated?
+          unless stream.authenticated?
             el << doc.create_element('mechanisms') do |sasl|
               sasl.default_namespace = NAMESPACES[:sasl]
               %w[PLAIN].each do |mechanism|
@@ -131,7 +133,7 @@ module Dune
               end
             end
           else
-            unless @stream.bound?
+            unless stream.bound?
               el << doc.create_element('bind') do |sasl|
                 sasl.default_namespace = NAMESPACES[:bind]
               end
