@@ -6,12 +6,12 @@ remove a contact, disconnect. Prototype is not an implementation of any specific
 subset of the spec.
 
 * Accept multiple connections
-* StartTLS
-* SASL authentication
+* StartTLS *DONE*
+* SASL authentication *DONE (plain)*
 * Manage roster
-  * Add contacts
+  * Add contacts *DONE*
   * Remove contacts
-  * Change contacts
+  * Change contacts *DONE*
 * Presence
   * Set status
   * Broadcast presence
