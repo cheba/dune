@@ -114,8 +114,9 @@ module Dune
         close_stream
       else
         stanza = stanza_for(element)
+        response = stanza.response
         stream.context = stanza.new_context(stream.context)
-        stream.write stanza.response
+        stream.write response
       end
     end
 

@@ -26,7 +26,11 @@ module Dune
 
       def new_context(context)
         if @stream.authenticated?
-          context
+          if ![:unauthorized_client, :authorization].include? context
+            context
+          else
+            :binding
+          end
         else
           :binding
         end
