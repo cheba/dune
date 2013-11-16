@@ -24,7 +24,7 @@ module Dune
         end
       end
 
-      def new_conext(context)
+      def new_context(context)
         if @stream.authenticated?
           context
         else
