@@ -177,9 +177,6 @@ module Dune
       end
 
       stanza_class.new(element, stream)
-    rescue
-      require 'rubinius/debugger'
-      Rubinius::Debugger.start
     end
   end
 end
