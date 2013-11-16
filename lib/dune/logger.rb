@@ -21,12 +21,6 @@ module Dune
           time.strftime(@datetime_format)
         end
       end
-
-      #def msg2str(msg)
-      #  super.lines.map do |l|
-      #    "\t#{l}"
-      #  end.join("\n")
-      #end
     end
   end
 end
