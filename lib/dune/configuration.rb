@@ -26,7 +26,6 @@ module Dune
 
     def client(&block)
       if block_given?
-        puts block
         @client = ClientConfiguration.new
 
         @client.instance_exec(&block)

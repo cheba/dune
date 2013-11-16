@@ -30,30 +30,30 @@ module Dune
         return if @closed
 
         data = @socket.readpartial(4096)
-        puts "\e[34m#{data.strip.empty? ? '∅' : data}\e[0m"
+        server.logger.debug(id) { "\e[34m#{data.strip.empty? ? '∅' : data}\e[0m" }
         @parser << data
       end
     rescue EOFError => e
-      puts e
+      server.logger.error(id) { e }
       close
     ensure
       @socket.close
-      puts "I'm done"
+      server.logger.info(id) { "I'm done" }
     end
 
     def write(str)
       if str
         str = str.to_xml if str.respond_to?(:to_xml)
 
-        puts "\e[32m#{str.strip.empty? ? '∅' : str}\e[0m"
+        server.logger.debug(id) { "\e[32m#{str.strip.empty? ? '∅' : str}\e[0m" }
         @socket.write(str).tap do |n|
-          puts "<-   #{n}"
+          server.logger.debug(id) { "<-   #{n}" }
         end
       end
     end
 
     def close
-      puts 'closing stream'
+      server.logger.info(id) { 'closing stream' }
       @closed = true
       write('</stream:stream>')
     end
@@ -96,7 +96,7 @@ module Dune
     end
 
     def restart
-      puts "Restarting stream"
+      server.logger.info(id) { "Restarting stream" }
       @parser = Parser.new(self)
       @auth_fails = 0
     end
@@ -109,7 +109,7 @@ module Dune
         write e
         close
       else
-        puts "\e[31mError: #{e}\e[0m"
+        server.logger.error(id) { "\e[31mError: #{e}\e[0m" }
         write StreamErrors::InternalServerError.new
         close
       end

@@ -25,7 +25,6 @@ module Dune
     end
 
     def set_roster(jid, contact)
-      puts "Setting contact: #{contact}"
       dset = @db[:contacts].where(jid: jid.bare, contact_jid: contact.jid.bare)
       if dset.first
         dset.update(contact.attributes.select {|k, v| [:name, :pending, :subscription, :gruops].include? k })

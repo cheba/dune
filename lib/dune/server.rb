@@ -4,12 +4,13 @@ require 'dune/stream'
 require 'dune/router'
 require 'dune/storage'
 require 'dune/configuration'
+require 'dune/logger'
 
 module Dune
   class Server
     include Celluloid::IO
 
-    attr_reader :router, :storage, :config
+    attr_reader :router, :storage, :config, :logger
 
     def initialize
       @config = Configuration.new
@@ -22,7 +23,10 @@ module Dune
 
       @server = TCPServer.new(host, port)
 
-      puts("Accepting client connections on #{host}:#{port}")
+      @logger = Dune::Logger.new(STDOUT)
+      logger.level = Dune::Logger::DEBUG
+
+      logger.info("Accepting client connections on #{host}:#{port}")
 
 
       #async.run
@@ -37,7 +41,7 @@ module Dune
     private
 
     def handle_connection(socket)
-      puts "new connection"
+      logger.info "New connection"
       stream = Dune::Stream.new(socket, self)
       @router << stream
 

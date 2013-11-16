@@ -17,12 +17,12 @@ module Dune
     end
 
     def response
-      puts "\e[33;1m" + "Unhandled stanza" + "\e[0m"
+      @stream.server.logger.info(@stream.id) { "\e[33;1m" + "Unhandled stanza" + "\e[0m" }
       ''
     end
 
     def new_context(context)
-      puts "\e[33;1m" + "Current context: #{context.inspect}" + "\e[0m"
+      @stream.server.logger.info(@stream.id) { "\e[33;1m" + "Current context: #{context.inspect}" + "\e[0m" }
       context
     end
   end

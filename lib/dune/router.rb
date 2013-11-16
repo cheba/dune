@@ -6,16 +6,16 @@ module Dune
 
     def <<(stream)
       unless @streams.include? stream
-        puts "Adding stream: #{stream.inspect}"
+        stream.server.logger.debug "Adding stream: #{stream.inspect}"
         @streams << stream
       else
-        puts "Stream is already in router: #{stream.inspect}"
+        stream.server.logger.debug "Stream is already in router: #{stream.inspect}"
       end
       self
     end
 
     def >>(stream)
-      puts "Removig stream: #{stream.inspect}"
+      stream.server.logger.debug "Removig stream: #{stream.inspect}"
       @streams.delete(stream)
     end
 

@@ -66,7 +66,6 @@ module Dune
 
     def end_element_namespace(name, prefix=nil, uri=nil)
       if stream?(name, uri)
-        puts "End of stream"
         close_stream
       elsif @element.parent
         @element = @element.parent
@@ -111,7 +110,7 @@ module Dune
 
     def process_element(element)
       if error? element
-        puts "ERROR"
+        stream.server.logger.error(stream.id) { element.to_xml }
         close_stream
       else
         stanza = stanza_for(element)

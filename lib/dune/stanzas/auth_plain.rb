@@ -47,7 +47,7 @@ module Dune
 
           if jid.valid?
             user = User.authenticate(jid, password, @stream.server)
-            puts user.inspect
+            @stream.server.logger.info(@stream.id) { user.inspect }
             if user
               # TODO implement authorization
               # authzid denotes an entity on whose behalf authenticating entity
@@ -75,7 +75,7 @@ module Dune
       def decode64(encoded)
         Base64.strict_decode64(encoded)
       rescue StandardError => e
-        puts e
+        @stream.server.logger.info(@stream.id) { e }
         raise SaslErrors::IncorrectEncoding
       end
     end
