@@ -22,7 +22,7 @@ module Dune
           el['type'] = type
           el['id'] = @element['id']
         end
-        yield element, document
+        yield element, document if block_given?
         element
       end
     end

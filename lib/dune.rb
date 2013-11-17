@@ -10,6 +10,7 @@ module Dune
      bind:      'urn:ietf:params:xml:ns:xmpp-bind',
      streams:   'urn:ietf:params:xml:ns:xmpp-streams',
      stanzas:   'urn:ietf:params:xml:ns:xmpp-stanzas',
+     session:   'urn:ietf:params:xml:ns:xmpp-session'
   }
 end
 
