@@ -11,6 +11,7 @@ require 'dune/stanzas/set_session'
 require 'dune/stanzas/roster_get'
 require 'dune/stanzas/roster_set'
 require 'dune/stanzas/subscribe'
+require 'dune/stanzas/unknown_iq'
 
 module Dune
   class Parser < Nokogiri::XML::SAX::Document
@@ -32,7 +33,8 @@ module Dune
         Stanzas::SetSession,
         Stanzas::RosterGet,
         Stanzas::RosterSet,
-        Stanzas::Subscribe
+        Stanzas::Subscribe,
+        Stanzas::UnknownIQ  # Must be last
       ]
     }
 
