@@ -32,5 +32,12 @@ module Dune
     def route(stanza)
 
     end
+
+    def shutdown
+      @streams.each do |stream|
+        stream.close
+        self >> stream
+      end
+    end
   end
 end

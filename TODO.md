@@ -5,7 +5,7 @@ client use case: connect, add a contact, send a message, receive a message,
 remove a contact, disconnect. Prototype is not an implementation of any specific
 subset of the spec.
 
-* Accept multiple connections
+* Accept multiple connections *DONE*
 * StartTLS *DONE*
 * SASL authentication *DONE (plain)*
 * Manage roster

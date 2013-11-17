@@ -10,6 +10,10 @@ module Dune
   class Server
     include Celluloid::IO
 
+    DEFAULT_BACKLOG = 100
+
+    finalizer :shutdown
+
     attr_reader :router, :storage, :config, :logger
 
     def initialize
@@ -22,6 +26,8 @@ module Dune
       @storage = config.storage.driver.new(config.storage.connection_params)
 
       @server = TCPServer.new(host, port)
+      @server.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1)
+      @server.listen(DEFAULT_BACKLOG)
 
       @logger = Dune::Logger.new(STDOUT)
       logger.level = Dune::Logger::DEBUG
@@ -29,13 +35,13 @@ module Dune
       logger.info("Accepting client connections on #{host}:#{port}")
 
 
-      #async.run
-      run
+      async.run
+      #run
     end
 
     def run
-      #loop { async.handle_connection @server.accept }
-      loop { handle_connection @server.accept }
+      loop { async.handle_connection @server.accept }
+      #loop { handle_connection @server.accept }
     end
 
     private
@@ -48,6 +54,11 @@ module Dune
       stream.run
 
       @router >> stream
+    end
+
+    def shutdown
+      @router.shutdown
+      @server.close if @server
     end
   end
 end
